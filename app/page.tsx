@@ -13,6 +13,8 @@ export default function Home() {
     employmentEnd: '',
     position: '',
     grievance: '',
+    criminalActivity: '',
+    anonymousSubmission: true,
     agree: false,
   });
 
@@ -55,6 +57,8 @@ export default function Home() {
         employmentEnd: '',
         position: '',
         grievance: '',
+        criminalActivity: '',
+        anonymousSubmission: true,
         agree: false,
       });
       setSubmitted(false);
@@ -317,17 +321,35 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-3xl p-10 shadow-2xl border border-white/10">
             {submitted ? (
               <div className="text-center py-12">
-                <div className="mx-auto w-16 h-16 bg-emerald-400 text-black rounded-2xl flex items-center justify-center text-4xl mb-6">✅</div>
+                <div className="mx-auto w-24 h-24 bg-emerald-400/15 border border-emerald-400/30 text-emerald-400 rounded-[2rem] flex items-center justify-center mb-6 shadow-xl shadow-emerald-500/20">
+                  <CheckCircle className="w-14 h-14" />
+                </div>
                 <h3 className="text-3xl font-semibold">Grievance Received</h3>
-                <p className="text-zinc-400 mt-4">
-                  Thank you. A member of our legal team will contact you within 48 hours.<br />
-                  You are now part of the class action.
+                <p className="text-xl text-zinc-300 mt-4">Thank you for standing up for justice.</p>
+                <div className="inline-flex items-center gap-x-2 mt-6 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-5 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">
+                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                  Attorneys Reviewing
+                </div>
+                <p className="text-zinc-400 mt-6">
+                  A member of our legal team will contact you within 48 hours.
+                </p>
+                <p className="text-zinc-300 mt-3">
+                  Your submission also unlocks the public archive, so you can see how other employees are telling their stories.
                 </p>
               </div>
             ) : (
               <div className="space-y-8">
+                <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-6">
+                  <p className="text-lg font-semibold text-white">
+                    Your story matters. All public submissions are anonymized. After you submit, you’ll be able to see other employees’ stories in our public archive.
+                  </p>
+                  <p className="mt-3 text-sm text-zinc-300">
+                    File now to help the case and unlock a private-to-public timeline of what other employees say happened inside LexisNexis Risk Solutions.
+                  </p>
+                </div>
+
                 {/* Personal Info */}
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2 font-medium">FULL NAME</label>
                     <input
@@ -354,7 +376,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2 font-medium">PHONE</label>
                     <input
@@ -380,7 +402,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div>
                     <label className="block text-sm text-zinc-400 mb-2 font-medium">START DATE</label>
                     <input
@@ -428,6 +450,36 @@ export default function Home() {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm text-zinc-400 mb-2 font-medium">
+                    Did this involve potential criminal activity?
+                  </label>
+                  <textarea
+                    name="criminalActivity"
+                    value={formData.criminalActivity}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full bg-black border border-white/20 focus:border-red-400 rounded-3xl px-5 py-5 outline-none resize-none transition"
+                    placeholder="Data theft, retaliation, harassment, false reporting, etc. — optional but powerful for the case"
+                  />
+                </div>
+
+                <div className="rounded-3xl border border-white/10 bg-black/40 p-6">
+                  <div className="flex items-start gap-x-3">
+                    <input
+                      type="checkbox"
+                      id="anonymousSubmission"
+                      name="anonymousSubmission"
+                      checked={formData.anonymousSubmission}
+                      onChange={handleChange}
+                      className="mt-1 w-5 h-5 accent-red-600"
+                    />
+                    <label htmlFor="anonymousSubmission" className="cursor-pointer text-sm leading-tight text-zinc-300">
+                      Submit completely anonymously (recommended for privacy)
+                    </label>
+                  </div>
+                </div>
+
                 <div className="flex items-start gap-x-3">
                   <input
                     type="checkbox"
@@ -438,8 +490,7 @@ export default function Home() {
                     className="mt-1 w-5 h-5 accent-red-600"
                   />
                   <label htmlFor="agree" className="text-sm text-zinc-400 leading-tight cursor-pointer">
-                    I confirm this information is truthful and I wish to join the class-action lawsuit against LexisNexis Risk Solutions. 
-                    I understand my story may be used (anonymously if requested) by the legal team.
+                    I confirm that this information is truthful. I understand my story may be used (anonymously if requested) by the legal team.
                   </label>
                 </div>
 

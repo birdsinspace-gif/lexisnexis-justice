@@ -4,6 +4,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'LexisNexis Justice | File Your Grievance',
   description: 'Former and current employees of LexisNexis Risk Solutions — join the class action.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
