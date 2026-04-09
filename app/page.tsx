@@ -20,6 +20,7 @@ export default function Home() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -38,13 +39,28 @@ export default function Home() {
     }
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    // Simulate API call (in production, replace with your Formspree, EmailJS, or backend endpoint)
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch('/api/grievance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    console.log('Grievance submitted:', formData);
-    setSubmitted(true);
-    setIsSubmitting(false);
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Submission failed. Please try again.');
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Submission failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
 
     // Reset form after success
     setTimeout(() => {
@@ -62,6 +78,7 @@ export default function Home() {
         agree: false,
       });
       setSubmitted(false);
+      setSubmitError('');
     }, 4000);
   };
 
@@ -493,6 +510,12 @@ export default function Home() {
                     I confirm that this information is truthful. I understand my story may be used (anonymously if requested) by the legal team.
                   </label>
                 </div>
+
+                {submitError ? (
+                  <div className="rounded-3xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-200">
+                    {submitError}
+                  </div>
+                ) : null}
 
                 <button
                   type="submit"
