@@ -42,20 +42,21 @@ export default function Home() {
     setError('');
 
     try {
-      await fetch(
-        'https://script.google.com/macros/s/AKfycbxdmzjuL_AYHx_XXy8qWOqCogL4LCdGFOWO8PlT4mVLqDfLj6ynxmMAQc1mbZEYEVb-/exec',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-          mode: 'no-cors',
-        }
-      );
+      const response = await fetch('/api/grievance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Submission failed. Please try again.');
+      }
 
       setSubmitted(true);
     } catch (err) {
       console.error(err);
-      setError('Submission failed. Please try again.');
+      setError(err instanceof Error ? err.message : 'Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

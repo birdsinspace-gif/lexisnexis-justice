@@ -10,20 +10,16 @@ type GrievancePayload = {
   position?: string;
   grievance?: string;
   criminalActivity?: string;
+  submitAnonymously?: boolean;
   anonymousSubmission?: boolean;
   agree?: boolean;
 };
 
-const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL;
+const GOOGLE_APPS_SCRIPT_URL =
+  process.env.GOOGLE_APPS_SCRIPT_URL ||
+  'https://script.google.com/macros/s/AKfycbxdmzjuL_AYHx_XXy8qWOqCogL4LCdGFOWO8PlT4mVLqDfLj6ynxmMAQc1mbZEYEVb-/exec';
 
 export async function POST(request: Request) {
-  if (!GOOGLE_APPS_SCRIPT_URL) {
-    return NextResponse.json(
-      { error: 'Form endpoint is not configured yet. Add GOOGLE_APPS_SCRIPT_URL to continue.' },
-      { status: 500 },
-    );
-  }
-
   let body: GrievancePayload;
 
   try {
@@ -44,6 +40,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         ...body,
+        anonymousSubmission: body.submitAnonymously ?? body.anonymousSubmission ?? false,
         submittedAt: new Date().toISOString(),
         source: 'lexisnexis-justice',
       }),
