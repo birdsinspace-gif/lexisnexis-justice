@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowRight, Shield, Users, Scale, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 
@@ -98,6 +99,7 @@ export default function Home() {
             <a href="#problem" className="hover:text-red-400 transition-colors">The Problem</a>
             <a href="#why" className="hover:text-red-400 transition-colors">Why Class Action?</a>
             <a href="#stories" className="hover:text-red-400 transition-colors">Real Stories</a>
+            <Link href="/archive" className="hover:text-red-400 transition-colors">Public Archive</Link>
             <a href="#file" className="hover:text-red-400 transition-colors">File Grievance</a>
           </div>
 
@@ -348,6 +350,13 @@ export default function Home() {
                   Your submission has been added to the public archive (anonymized). 
                   You can now view other employees’ stories.
                 </p>
+                <Link
+                  href="/archive"
+                  className="mt-8 inline-flex items-center gap-x-3 rounded-3xl border border-white/10 bg-white/5 px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-red-400/40 hover:bg-red-500/10"
+                >
+                  View Public Archive
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             ) : (
               <div className="space-y-8">
